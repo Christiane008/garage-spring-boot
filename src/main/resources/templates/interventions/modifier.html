@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Modifier l'intervention</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>Modifier l'intervention</h1>
+
+        <form th:action="@{/interventions/{id}(id=${interventionId})}" th:object="${intervention}" method="post">
+
+            <label>Description :
+                <input type="text" th:field="*{description}"/>
+            </label>
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red;"></span>
+            <br/>
+
+            <label>Date de début :
+                <input type="date" th:field="*{dateDebut}"/>
+            </label>
+            <span th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}" style="color:red;"></span>
+            <br/>
+
+            <label>Coût de main d'oeuvre :
+                <input type="number" step="0.01" th:field="*{coutMainOeuvre}"/>
+            </label>
+            <span th:if="${#fields.hasErrors('coutMainOeuvre')}" th:errors="*{coutMainOeuvre}" style="color:red;"></span>
+            <br/>
+
+            <button type="submit">Enregistrer</button>
+        </form>
+
+        <a th:href="@{/interventions/{id}(id=${interventionId})}">Annuler</a>
+    </main>
+</body>
+</html>

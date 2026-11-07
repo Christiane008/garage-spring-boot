@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Factures</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>Liste des factures</h1>
+
+        <table border="1">
+            <tr>
+                <th>Numéro</th><th>Date d'émission</th><th>Montant total</th><th>Statut</th><th>Client</th><th>Actions</th>
+            </tr>
+            <tr th:each="facture : ${factures}">
+                <td th:text="${facture.numero}"></td>
+                <td th:text="${facture.dateEmission}"></td>
+                <td th:text="${facture.montantTotal}"></td>
+                <td th:text="${facture.statut}"></td>
+                <td th:text="${facture.client.nom}"></td>
+                <td>
+                    <a th:href="@{/factures/{id}(id=${facture.id})}">Détail</a>
+                </td>
+            </tr>
+        </table>
+        <p th:if="${factures.isEmpty()}">Aucune facture émise pour le moment.</p>
+    </main>
+</body>
+</html>

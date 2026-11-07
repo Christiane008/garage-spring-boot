@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Détail facture</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1 th:text="${facture.numero}"></h1>
+        <p>Date d'émission : <span th:text="${facture.dateEmission}"></span></p>
+        <p>Montant total : <span th:text="${facture.montantTotal}"></span></p>
+        <p>Statut : <span th:text="${facture.statut}"></span></p>
+        <p>Client : <span th:text="${facture.client.nom} + ' ' + ${facture.client.prenom}"></span></p>
+        <p th:if="${facture.intervention != null}">
+            Intervention associée :
+            <a th:href="@{/interventions/{id}(id=${facture.intervention.id})}"
+               th:text="${facture.intervention.description}"></a>
+        </p>
+
+        <a th:href="@{/factures}">Retour à la liste</a>
+    </main>
+</body>
+</html>

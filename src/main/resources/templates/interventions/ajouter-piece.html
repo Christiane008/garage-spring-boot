@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Ajouter une pièce</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>Ajouter une pièce à l'intervention</h1>
+
+        <form th:action="@{/interventions/{id}/pieces(id=${interventionId})}" th:object="${ligne}" method="post">
+
+            <label>Pièce :
+                <select th:field="*{pieceId}">
+                    <option value="">-- Choisir une pièce --</option>
+                    <option th:each="piece : ${pieces}"
+                            th:value="${piece.id}"
+                            th:text="${piece.nom} + ' (' + ${piece.reference} + ') — ' + ${piece.quantiteStock} + ' en stock — ' + ${piece.prixUnitaire}">
+                    </option>
+                </select>
+            </label>
+            <span th:if="${#fields.hasErrors('pieceId')}" th:errors="*{pieceId}" style="color:red;"></span>
+            <br/>
+
+            <label>Quantité :
+                <input type="number" th:field="*{quantite}" min="1"/>
+            </label>
+            <span th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}" style="color:red;"></span>
+            <br/>
+
+            <button type="submit">Ajouter</button>
+        </form>
+
+        <a th:href="@{/interventions/{id}(id=${interventionId})}">Annuler</a>
+    </main>
+</body>
+</html>

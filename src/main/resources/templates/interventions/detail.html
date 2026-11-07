@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Détail intervention</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1 th:text="${intervention.description}"></h1>
+        <p>Statut : <span th:text="${intervention.statut}"></span></p>
+        <p>Date début : <span th:text="${intervention.dateDebut}"></span></p>
+        <p>Date fin : <span th:text="${intervention.dateFin}"></span></p>
+        <p>Véhicule : <span th:text="${intervention.vehicule.immatriculation}"></span></p>
+        <p>Coût main d'oeuvre : <span th:text="${intervention.coutMainOeuvre}"></span></p>
+
+        <a th:href="@{/interventions/{id}/modifier(id=${intervention.id})}"
+           th:if="${intervention.statut.name() != 'TERMINEE' and intervention.statut.name() != 'ANNULEE'}">
+           Modifier l'intervention
+        </a>
+
+        <p th:if="${intervention.facture != null}">
+            Facture générée :
+            <a th:href="@{/factures/{id}(id=${intervention.facture.id})}"
+               th:text="${intervention.facture.numero}"></a>
+        </p>
+
+        <h2>Pièces utilisées</h2>
+        <a th:href="@{/interventions/{id}/pieces/nouveau(id=${intervention.id})}"
+           th:if="${intervention.statut.name() != 'TERMINEE' and intervention.statut.name() != 'ANNULEE'}">
+           Ajouter une pièce
+        </a>
+        <table border="1">
+            <tr>
+                <th>Référence</th><th>Nom</th><th>Quantité</th><th>Prix unitaire</th><th>Sous-total</th><th>Actions</th>
+            </tr>
+            <tr th:each="ligne : ${intervention.lignesIntervention}">
+                <td th:text="${ligne.piece.reference}"></td>
+                <td th:text="${ligne.piece.nom}"></td>
+                <td th:text="${ligne.quantite}"></td>
+                <td th:text="${ligne.prixUnitaire}"></td>
+                <td th:text="${ligne.prixUnitaire * ligne.quantite}"></td>
+                <td th:if="${intervention.statut.name() != 'TERMINEE' and intervention.statut.name() != 'ANNULEE'}">
+                    <form th:action="@{/interventions/{id}/pieces/{ligneId}/supprimer(id=${intervention.id}, ligneId=${ligne.id})}" method="post">
+                        <button type="submit" onclick="return confirm('Retirer cette pièce ? Le stock sera recrédité.');">Retirer</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <p th:if="${intervention.lignesIntervention.isEmpty()}">Aucune pièce détachée utilisée pour le moment.</p>
+
+        <form th:action="@{/interventions/{id}/cloturer(id=${intervention.id})}" method="post"
+              th:if="${intervention.statut.name() != 'TERMINEE' and intervention.statut.name() != 'ANNULEE'}">
+            <button type="submit">Clôturer l'intervention</button>
+        </form>
+
+        <form th:action="@{/interventions/{id}/supprimer(id=${intervention.id})}" method="post">
+            <button type="submit" onclick="return confirm('Confirmer la suppression ?');">Supprimer</button>
+        </form>
+    </main>
+</body>
+</html>

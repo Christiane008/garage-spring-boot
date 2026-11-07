@@ -1,0 +1,16 @@
+<header th:fragment="header" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <nav>
+        <a th:href="@{/}">Accueil</a> |
+        <a th:href="@{/clients}">Clients</a> |
+        <a th:href="@{/vehicules}">Véhicules</a> |
+        <a th:href="@{/interventions}">Interventions</a>
+        <span sec:authorize="isAuthenticated()">
+            | Connecté : <span sec:authentication="name"></span>
+            (<span sec:authentication="authorities"></span>)
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit">Se déconnecter</button>
+            </form>
+        </span>
+    </nav>
+    <hr/>
+</header>

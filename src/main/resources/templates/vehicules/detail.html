@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Détail véhicule</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1 th:text="${vehicule.immatriculation}"></h1>
+        <p>Marque : <span th:text="${vehicule.marque}"></span></p>
+        <p>Modèle : <span th:text="${vehicule.modele}"></span></p>
+        <p>Année : <span th:text="${vehicule.annee}"></span></p>
+        <p>Kilométrage : <span th:text="${vehicule.kilometrage}"></span></p>
+        <p>Propriétaire : <span th:text="${vehicule.proprietaire.nom}"></span></p>
+
+        <form th:action="@{/vehicules/{id}/supprimer(id=${vehicule.id})}" method="post">
+            <button type="submit" onclick="return confirm('Confirmer la suppression ?');">Supprimer</button>
+        </form>
+    </main>
+</body>
+</html>

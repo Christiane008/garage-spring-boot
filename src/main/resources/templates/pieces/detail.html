@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Détail pièce</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1 th:text="${piece.nom}"></h1>
+        <p>Id : <span th:text="${piece.id}"></span></p>
+        <p>Référence : <span th:text="${piece.reference}"></span></p>
+        <p>Prix unitaire (tarif actuel) : <span th:text="${piece.prixUnitaire}"></span></p>
+        <p>Quantité en stock : <span th:text="${piece.quantiteStock}"></span></p>
+
+        <a th:href="@{/pieces/{id}/modifier(id=${piece.id})}">Modifier</a>
+
+        <h2>Utilisée dans les interventions suivantes</h2>
+        <table border="1">
+            <tr>
+                <th>Ligne id</th><th>Intervention</th><th>Quantité utilisée</th><th>Prix unitaire au moment de l'utilisation</th>
+            </tr>
+            <tr th:each="ligne : ${piece.lignesIntervention}">
+                <td th:text="${ligne.id}"></td>
+                <td>
+                    <a th:href="@{/interventions/{id}(id=${ligne.intervention.id})}"
+                       th:text="${ligne.intervention.description}"></a>
+                </td>
+                <td th:text="${ligne.quantite}"></td>
+                <td th:text="${ligne.prixUnitaire}"></td>
+            </tr>
+        </table>
+        <p th:if="${piece.lignesIntervention.isEmpty()}">Cette pièce n'a encore été utilisée dans aucune intervention.</p>
+    </main>
+</body>
+</html>

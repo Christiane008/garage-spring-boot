@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Client</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1 th:text="${estModification} ? 'Modifier le client' : 'Ajouter un client'"></h1>
+
+        <form th:action="${estModification} ? @{/clients/{id}(id=${clientId})} : @{/clients}"
+              th:object="${client}" method="post">
+
+            <label>Nom :
+                <input type="text" th:field="*{nom}"/>
+            </label>
+            <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" style="color:red;"></span>
+            <br/>
+
+            <label>Prénom :
+                <input type="text" th:field="*{prenom}"/>
+            </label>
+            <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" style="color:red;"></span>
+            <br/>
+
+            <label>Email :
+                <input type="email" th:field="*{email}"/>
+            </label>
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red;"></span>
+            <br/>
+
+            <label>Téléphone :
+                <input type="text" th:field="*{telephone}"/>
+            </label>
+            <br/>
+
+            <button type="submit">Enregistrer</button>
+        </form>
+    </main>
+</body>
+</html>

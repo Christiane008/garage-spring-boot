@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Recherche véhicules</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>Recherche de véhicules</h1>
+        <form th:action="@{/vehicules/recherche}" method="get">
+            <label>Marque : <input type="text" name="marque" th:value="${marque}"/></label>
+            <label>Immatriculation : <input type="text" name="immatriculation" th:value="${immatriculation}"/></label>
+            <button type="submit">Rechercher</button>
+        </form>
+        <table border="1">
+            <tr>
+                <th>Immatriculation</th><th>Marque</th><th>Modèle</th><th>Propriétaire</th>
+            </tr>
+            <tr th:each="vehicule : ${vehicules}">
+                <td th:text="${vehicule.immatriculation}"></td>
+                <td th:text="${vehicule.marque}"></td>
+                <td th:text="${vehicule.modele}"></td>
+                <td th:text="${vehicule.proprietaire.nom}"></td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>

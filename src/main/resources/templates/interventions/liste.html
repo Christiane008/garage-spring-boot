@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Interventions</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>Liste des interventions</h1>
+
+        <form th:action="@{/interventions}" method="get">
+            <label>Statut :
+                <select name="statut">
+                    <option value="">-- Tous --</option>
+                    <option value="EN_ATTENTE" th:selected="${statut != null and statut.name() == 'EN_ATTENTE'}">EN_ATTENTE</option>
+                    <option value="EN_COURS" th:selected="${statut != null and statut.name() == 'EN_COURS'}">EN_COURS</option>
+                    <option value="TERMINEE" th:selected="${statut != null and statut.name() == 'TERMINEE'}">TERMINEE</option>
+                    <option value="ANNULEE" th:selected="${statut != null and statut.name() == 'ANNULEE'}">ANNULEE</option>
+                </select>
+            </label>
+            <label>Du : <input type="date" name="debut" th:value="${debut}"/></label>
+            <label>Au : <input type="date" name="fin" th:value="${fin}"/></label>
+            <button type="submit">Filtrer</button>
+        </form>
+
+        <table border="1">
+            <tr>
+                <th>Description</th><th>Date début</th><th>Statut</th><th>Véhicule</th><th>Actions</th>
+            </tr>
+            <tr th:each="intervention : ${interventions}">
+                <td th:text="${intervention.description}"></td>
+                <td th:text="${intervention.dateDebut}"></td>
+                <td th:text="${intervention.statut}"></td>
+                <td th:text="${intervention.vehicule.immatriculation}"></td>
+                <td>
+                    <a th:href="@{/interventions/{id}(id=${intervention.id})}">Détail</a>
+                </td>
+            </tr>
+        </table>
+
+        <div>
+            <a th:if="${pageActuelle > 0}"
+               th:href="@{/interventions(page=${pageActuelle - 1}, statut=${statut}, debut=${debut}, fin=${fin})}">
+               Page précédente
+            </a>
+            <span th:text="'Page ' + (${pageActuelle} + 1) + ' / ' + ${totalPages}"></span>
+            <a th:if="${pageActuelle + 1 < totalPages}"
+               th:href="@{/interventions(page=${pageActuelle + 1}, statut=${statut}, debut=${debut}, fin=${fin})}">
+               Page suivante
+            </a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Clients</title></head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>Liste des clients</h1>
+        <a th:href="@{/clients/nouveau}">Ajouter un client</a>
+
+        <form th:action="@{/clients}" method="get">
+            <label>Rechercher par nom :
+                <input type="text" name="nom" th:value="${nom}"/>
+            </label>
+            <button type="submit">Rechercher</button>
+        </form>
+
+        <table border="1">
+            <tr>
+                <th>Nom</th><th>Prénom</th><th>Email</th><th>Téléphone</th><th>Actions</th>
+            </tr>
+            <tr th:each="client : ${clients}">
+                <td th:text="${client.nom}"></td>
+                <td th:text="${client.prenom}"></td>
+                <td th:text="${client.email}"></td>
+                <td th:text="${client.telephone}"></td>
+                <td>
+                    <a th:href="@{/clients/{id}/modifier(id=${client.id})}">Modifier</a>
+                    <form th:action="@{/clients/{id}/supprimer(id=${client.id})}" method="post" style="display:inline">
+                        <button type="submit" onclick="return confirm('Confirmer la suppression ?');">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <p th:if="${clients.isEmpty()}">Aucun client enregistré pour le moment.</p>
+    </main>
+</body>
+</html>
